@@ -22,7 +22,9 @@ import com.ios.errorchecks.RangeCheck;
 import com.ios.errorchecks.RangeCheck.Bound;
 
 public class KFoldCrossValidation extends ClassificationExperiment {
-	
+
+    public boolean shuffle = true;
+
 	public int folds = 10;
 	
 	public KFoldCrossValidation() {
@@ -34,7 +36,7 @@ public class KFoldCrossValidation extends ClassificationExperiment {
 		Dataset dataset = datasetBuilder.buildDataset();
 		ResultList<ClassificationResult> ret = new ResultList<>();
 		
-		List<Dataset> testings = dataset.getFolds(folds);
+		List<Dataset> testings = dataset.getFolds(folds, shuffle);
 		List<Dataset> trainings = dataset.getComplementaryFolds(testings);
 		
 		for(int i = 0; i < folds; i++) {

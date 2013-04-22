@@ -27,7 +27,7 @@ public abstract class Metrics<R extends Result> extends IObject implements Compa
 		setContent("data", new IList<>(List.class));
 	}
 	
-	public void prepare(ResultList<R> list) {
+	public void prepare(ResultList<? extends R> list) {
 		for(R result: list.results) {
 			prepareForEvaluation(result);
 			data.add(evaluateMetrics(result));

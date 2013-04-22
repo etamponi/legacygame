@@ -245,15 +245,13 @@ public class MultiResolutionAnalysis2 {
 	
 	private static double getMultiResolutionIndex(RealVector p) {
 		double mri = 0;
-		double normalizer = 0;
-		
+
 		for(int i = 0; i < p.getDimension(); i++) {
 			double wi = 1.0 - 1.0 * i / p.getDimension();
-			mri += wi * p.getEntry(i);
-			normalizer += 2*wi;
+			mri += wi * (1.0 - p.getEntry(i));
 		}
 		
-		return mri / normalizer;
+		return mri / (2 * p.getDimension());
 	}
 
 	private static List<Dataset> splitByCluster(Dataset ds, Dataset clusters, int n) {

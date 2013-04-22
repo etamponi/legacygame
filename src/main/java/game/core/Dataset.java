@@ -150,11 +150,17 @@ public class Dataset implements List<Instance> {
 		return new SampleIterator(sourceFilter, targetFilter, decoder);
 	}
 
-	public List<Dataset> getFolds(int folds) {
+    public List<Dataset> getFolds(int folds) {
+        return getFolds(folds, true);
+    }
+
+	public List<Dataset> getFolds(int folds, boolean shuffle) {
 		List<Dataset> ret = new ArrayList<>(folds);
 		
 		List<Integer> temp = Utils.range(0, size());
-		Collections.shuffle(temp, Experiment.getRandom());
+        if (shuffle) {
+            Collections.shuffle(temp, Experiment.getRandom());
+        }
 		
 		int foldSize = size() / folds;
 		

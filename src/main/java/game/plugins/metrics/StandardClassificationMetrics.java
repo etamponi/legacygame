@@ -112,7 +112,11 @@ public class StandardClassificationMetrics extends Metrics<ClassificationResult>
 		for(int i = 0; i < labels.size(); i++) {
 			double TP = truePositives.get(i);
 			double FP = falsePositives.get(i);
-			matrix.setEntry(row, i, TP / (FP + TP));
+            if (TP + FP != 0) {
+    			matrix.setEntry(row, i, TP / (FP + TP));
+            } else {
+                matrix.setEntry(row, i, 0);
+            }
 		}
 	}
 	
@@ -120,7 +124,11 @@ public class StandardClassificationMetrics extends Metrics<ClassificationResult>
 		for(int i = 0; i < labels.size(); i++) {
 			double TP = truePositives.get(i);
 			double FN = falseNegatives.get(i);
-			matrix.setEntry(row, i, TP / (FN + TP));
+            if (TP + FN == 0) {
+                matrix.setEntry(row, i, 0);
+            } else {
+    			matrix.setEntry(row, i, TP / (FN + TP));
+            }
 		}
 	}
 	
@@ -138,7 +146,11 @@ public class StandardClassificationMetrics extends Metrics<ClassificationResult>
 		for(int i = 0; i < labels.size(); i++) {
 			double precision = matrix.getEntry(0, i);
 			double recall = matrix.getEntry(1, i);
-			matrix.setEntry(row, i, 2*(precision*recall)/(precision+recall));
+            if (precision + recall == 0) {
+                matrix.setEntry(row, i, 0);
+            } else {
+    			matrix.setEntry(row, i, 2*(precision*recall)/(precision+recall));
+            }
 		}
 	}
 	
