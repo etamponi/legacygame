@@ -48,17 +48,30 @@ public class MultiResolutionAnalysis {
     }
 
     public static void main(String... args) {
-        MultiResolutionTransform transform = new MultiResolutionTransform(20, 0.20, 1);
+        MultiResolutionTransform transform = new MultiResolutionTransform(50, 0.15, 1);
 
         WekaClassifier classifier = new WekaClassifier();
         classifier.setContent("trainingAlgorithm", new WekaJ48());
 
-        MultiResolutionExperiment experiment = new MultiResolutionExperiment(true, 4, 10, transform);
+        MultiResolutionExperiment experiment = new MultiResolutionExperiment(true, 5, 3, 10, transform);
 
-        ResultList<MultiResolutionExperiment.MultiResolutionResult> results = experiment.run("data/keel/ring-pc05.dat.csv", classifier, 300);
+        String[] datasets = {
+                "appendicitis", "banana", "breast-cancer-original", "mammographic-masses", "phoneme",
+                "pima", "ring", "spambase", "twonorm", "wdbc" };
+        int[] sizes = {10, 530, 65, 96, 540, 70, 740, 455, 740, 56};
 
-        MultiResolutionAnalysis analysis = new MultiResolutionAnalysis();
-        analysis.run(results);
+        for(int i = 0; i < datasets.length; i++) {
+            String dataset = datasets[i];
+            int size = sizes[i];
+            System.out.println("Analysis for " + dataset + " (" + (size*10) + ")");
+
+            String filename = "data/keel/pc-" + dataset + ".dat.csv";
+
+            ResultList<MultiResolutionExperiment.MultiResolutionResult> results = experiment.run(filename, classifier, size);
+
+            MultiResolutionAnalysis analysis = new MultiResolutionAnalysis();
+            analysis.run(results);
+        }
     }
 
 }

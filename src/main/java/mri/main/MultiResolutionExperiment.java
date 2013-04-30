@@ -11,6 +11,7 @@ import game.plugins.experiments.KFoldCrossValidation;
 import game.plugins.metrics.StandardClassificationMetrics;
 import game.plugins.trainingalgorithms.KMeansAlgorithm;
 import game.plugins.trainingalgorithms.MahalanobisTransform;
+import game.plugins.trainingalgorithms.PrincipalComponents;
 import org.apache.commons.math3.linear.RealVector;
 
 import java.io.File;
@@ -19,12 +20,14 @@ import java.util.*;
 public class MultiResolutionExperiment {
 
     private boolean doMahalanobis;
+    private int components;
     private int clusters;
     private int folds;
     private MultiResolutionTransform transform;
 
-    public MultiResolutionExperiment(boolean doMahalanobis, int clusters, int folds, MultiResolutionTransform transform) {
+    public MultiResolutionExperiment(boolean doMahalanobis, int components, int clusters, int folds, MultiResolutionTransform transform) {
         this.doMahalanobis = doMahalanobis;
+        this.components = components;
         this.clusters = clusters;
         this.folds = folds;
         this.transform = transform;
@@ -55,6 +58,14 @@ public class MultiResolutionExperiment {
         if (dataset.size() != (folds*foldSize)) {
             throw new RuntimeException("Dataset size is invalid: " + dataset.size() + " (should be " + (folds*foldSize) + ")");
         }
+        /*
+        LinearTransform pca = new LinearTransform();
+        pca.setContent("datasetTemplate", dataset.getTemplate());
+        pca.setContent("trainingAlgorithm", new PrincipalComponents());
+        pca.setContent("trainingAlgorithm.components", components);
+        pca.trainingAlgorithm.execute(dataset);
+        dataset = dataset.apply(pca);
+        */
 
         if (doMahalanobis) {
             LinearTransform mahalanobis = new LinearTransform();

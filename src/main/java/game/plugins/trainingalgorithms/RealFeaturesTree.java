@@ -8,7 +8,7 @@
  * Contributors:
  *     Emanuele Tamponi - initial API and implementation
  ******************************************************************************/
-package game.plugins.algorithms;
+package game.plugins.trainingalgorithms;
 
 import game.core.Dataset;
 import game.core.Dataset.SampleIterator;
