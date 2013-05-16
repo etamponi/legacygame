@@ -25,11 +25,10 @@ public class MultiResolutionTransform {
     public Dataset apply(Dataset dataset) {
         Dataset ret = new Dataset(new DatasetTemplate(new ElementTemplate(new VectorTemplate(profileSize)), dataset.getTemplate().targetTemplate));
 
-        double sigmaMax = getSigmaMax(dataset);
         double percent0 = getFirstLabelPercent(dataset);
 
         for(Instance instance: dataset) {
-            RealVector profile = getProfile(instance, dataset, sigmaMax, percent0);
+            RealVector profile = getProfile(instance, dataset, percent0);
 
             ret.add(new Instance(new Data(new Element(profile)), instance.getTarget()));
         }
@@ -37,15 +36,12 @@ public class MultiResolutionTransform {
         return ret;
     }
 
-    private double getSigmaMax(Dataset dataset) {
+    private double getSigmaMax(Dataset dataset, Instance instance) {
         double ret = 0;
-        int threshold = (int)(dataset.size() * sigmaMaxPercent);
-        for(Instance instance: dataset) {
-            List<Double> distances = getDistances(instance, dataset);
-            Collections.sort(distances);
-            ret += distances.get(threshold);
-        }
-        return ret / dataset.size();
+        int threshold = (int)Math.round(dataset.size() * sigmaMaxPercent);
+        List<Double> distances = getDistances(instance, dataset);
+        Collections.sort(distances);
+        return distances.get(threshold);
     }
 
     private double getFirstLabelPercent(Dataset dataset) {
@@ -60,12 +56,13 @@ public class MultiResolutionTransform {
         return ret / dataset.size();
     }
 
-    private RealVector getProfile(Instance instance, Dataset dataset, double sigmaMax, double percent0) {
+    private RealVector getProfile(Instance instance, Dataset dataset, double percent0) {
         List<Double> distances = getDistances(instance, dataset);
         double y = getSign(instance.getTarget().get().get(String.class),
                 dataset.getTemplate().getContent("targetTemplate.0.labels.0", String.class));
 
         RealVector ret = new ArrayRealVector(profileSize);
+        double sigmaMax = getSigmaMax(dataset, instance);
 
         for(int i = 0; i < profileSize; i++) {
             double sigma = getSigma(i, sigmaMax);

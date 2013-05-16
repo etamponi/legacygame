@@ -9,7 +9,7 @@ public class ResultAnalysis {
         File folder = new File(".");
         double[][][][][] complete = new double[5][5][3][10][5];
         for (File file: folder.listFiles()) {
-            if (file.getName().startsWith("results_")) {
+            if (file.getName().startsWith("results_Multi")) {
                 double[][] values = new double[10][5];
 
                 BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -24,7 +24,6 @@ public class ResultAnalysis {
                         continue;
                     }
                     if (i % 4 == 0 && !line.isEmpty()) {
-//                        System.out.println(line);
                         values[j][i/4] = Double.valueOf(line.split(" ")[1]);
                     }
                 }

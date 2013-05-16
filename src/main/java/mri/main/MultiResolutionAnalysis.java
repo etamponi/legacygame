@@ -9,7 +9,6 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
 
 import java.io.FileWriter;
-import java.io.PrintStream;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Locale;
@@ -59,15 +58,15 @@ public class MultiResolutionAnalysis {
 
     public static void main(String... args) throws Exception {
         Locale.setDefault(Locale.ENGLISH);
-        int[] ms = {/*40, */50};
-        double[] sigmamaxs = {/*0.10, */0.15/*, 0.20, 0.25, 0.30*/};
-        int[] clusternums = {3/*, 4, 5*/};
+        int[] ms = {10, 20, 30, 40, 50};
+        double[] sigmamaxs = {0.10, 0.15, 0.20, 0.25, 0.30};
+        int[] clusternums = {3, 4, 5};
 
         for(int m: ms) {
             for(double sigmamax: sigmamaxs) {
                 for(int clusters: clusternums) {
                     String name = String.format("MultiResolutionExperiment(%d, 10, MultiResolutionTransform(%d, %.2f))", clusters, m, sigmamax);
-                    String fileName = "results_" + name + ".txt";
+                    String fileName = "results_nomean_" + name + ".txt";
                     Writer writer = new FileWriter(fileName, false);
 
                     MultiResolutionTransform transform = new MultiResolutionTransform(m, sigmamax, 1);
