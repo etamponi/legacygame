@@ -1,6 +1,5 @@
 package game.core.blocks;
 
-import game.core.Block;
 import game.core.Data;
 import game.core.DatasetTemplate;
 import game.core.trainingalgorithms.BasicEnsembleTraining;
@@ -33,8 +32,8 @@ public class Ensemble extends Classifier {
 	@Override
 	public Data classify(Data input) {
 		List<Data> predictions = new ArrayList<>();
-		for(Block cls: classifiers)
-			predictions.add(cls.transform(input));
+		for(Classifier cls: classifiers)
+			predictions.add(cls.classify(input));
 		return strategy.combine(predictions);
 	}
 

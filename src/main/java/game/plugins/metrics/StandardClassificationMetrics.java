@@ -85,7 +85,7 @@ public class StandardClassificationMetrics extends Metrics<ClassificationResult>
 			ret += row.getEntry(i) * w;
 			sum += w;
 		}
-		ret = ret / sum;
+		ret = sum == 0 ? 0 : ret / sum;
 		
 		return ret;
 	}
@@ -138,7 +138,8 @@ public class StandardClassificationMetrics extends Metrics<ClassificationResult>
 			double TN = trueNegatives.get(i);
 			double FN = falseNegatives.get(i);
 			double FP = falsePositives.get(i);
-			matrix.setEntry(row, i, (TP + TN) / (FN + TP + FP + TN));
+            double den = TP + TN + FP + FN;
+			matrix.setEntry(row, i, den == 0 ? 0 : (TP + TN) / den);
 		}
 	}
 	

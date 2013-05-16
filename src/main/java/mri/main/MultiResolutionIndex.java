@@ -20,7 +20,7 @@ public class MultiResolutionIndex extends Metrics<MultiResolutionExperiment.Mult
         for(Instance i: transformedDataset) {
             ret += getMultiResolutionIndex(i.getSource().get().get(RealVector.class));
         }
-        return ret / transformedDataset.size();
+        return transformedDataset.size() == 0 ? 0 : ret / transformedDataset.size();
     }
 
     private double getMultiResolutionIndex(RealVector v) {

@@ -63,8 +63,10 @@ public abstract class Classifier extends Block {
 	public String compatibilityError(DatasetTemplate template) {
 		if (template == null || !template.isReady())
 			return "datasetTemplate is null or is not ready";
+        /*
 		if (!template.targetTemplate.isSingletonTemplate(LabelTemplate.class))
 			return "targetTemplate must be a singleton LabelTemplate";
+		*/
 		return classifierCompatibilityError(template);
 	}
 

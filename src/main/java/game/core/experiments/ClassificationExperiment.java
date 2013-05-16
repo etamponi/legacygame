@@ -30,7 +30,7 @@ public abstract class ClassificationExperiment extends Experiment<Classification
 	
 	public ClassificationExperiment() {
 		addTrigger(new MasterSlaveTrigger(this, "datasetBuilder.datasetTemplate", "classifier.datasetTemplate"));
-		
+		/*
 		addErrorCheck(new PropertyCheck<DatasetTemplate>("datasetBuilder.datasetTemplate") {
 			@Override
 			protected String getError(DatasetTemplate value) {
@@ -40,7 +40,7 @@ public abstract class ClassificationExperiment extends Experiment<Classification
 					return "set a single LabelTemplate as target";
 			}
 		});
-		
+		*/
 		addErrorCheck(new PropertyCheck<Decoder>("classifier.decoder") {
 			@Override public String getError(Decoder value) {
 				if (value == null)
