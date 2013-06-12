@@ -28,7 +28,7 @@ public class ResultAnalysis {
                     }
                 }
 
-                printResult(resultName, values);
+                //printResult(resultName, values);
 
                 storeResult(complete, resultName, values);
 
@@ -36,14 +36,26 @@ public class ResultAnalysis {
             }
         }
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        String s;
-        System.out.print("Insert indices: ");
-        while ((s = in.readLine()) != null && s.length() != 0) {
-            int[] is = splitIndices(s);
-            printResult(s, complete[is[0]][is[1]][is[2]]);
-            System.out.print("Insert indices: ");
+        for(int k = 0; k < 5; k++) {
+            for(int j = 0; j < 3; j++) {
+                System.out.print("\\textbf{"+(j+3)+"} ");
+                for(int i = 0; i < 5; i++) {
+                    printResult("", complete[i][k][j], 4);
+                }
+                System.out.println(" \\\\");
+            }
+            System.out.println();
         }
+
+//        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+//        String s;
+//        System.out.print("Insert indices: ");
+//
+//        while ((s = in.readLine()) != null && s.length() != 0) {
+//            int[] is = splitIndices(s);
+//            printResult(s, complete[is[0]][is[1]][is[2]]);
+//            System.out.print("Insert indices: ");
+//        }
     }
 
     private static int[] splitIndices(String s) {
@@ -60,22 +72,22 @@ public class ResultAnalysis {
         complete[Integer.parseInt(integers[3])/10 - 1][Integer.parseInt(integers[5])/5 - 2][Integer.parseInt(integers[1])-3] = values;
     }
 
-    private static void printResult(String resultName, double[][] values) {
-        System.out.println(resultName);
-        for(int i = 0; i < values.length; i++) {
-            for(int j = 0; j < values[i].length; j++) {
-                System.out.print(String.format("%8.3f", values[i][j]));
-            }
-            System.out.println();
-        }
-        for(int j = 0; j < values[0].length; j++) {
+    private static void printResult(String resultName, double[][] values, int col) {
+//        System.out.println(resultName);
+//        for(int i = 0; i < values.length; i++) {
+//            for(int j = 0; j < values[i].length; j++) {
+//                System.out.print(String.format("%8.3f", values[i][j]));
+//            }
+//            System.out.println();
+//        }
+//        for(int j = 0; j < values[0].length; j++) {
             int count = 0;
             for(int i = 0; i < values.length; i++) {
-                count -= (int)values[i][j];
+                count -= (int)values[i][col];
             }
-            System.out.print(String.format("%8d", count));
-        }
-        System.out.println("\n");
+            System.out.print(String.format(" &%7d", count));
+//        }
+//        System.out.println();
     }
 
 }
