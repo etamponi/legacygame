@@ -66,7 +66,7 @@ public class MultiResolutionAnalysis {
             for(double sigmamax: sigmamaxs) {
                 for(int clusters: clusternums) {
                     String name = String.format("MultiResolutionExperiment(%d, 10, MultiResolutionTransform(%d, %.2f))", clusters, m, sigmamax);
-                    String fileName = "results_nomean_" + name + ".txt";
+                    String fileName = "results/results_noprior_" + name + ".txt";
                     Writer writer = new FileWriter(fileName, false);
 
                     MultiResolutionTransform transform = new MultiResolutionTransform(m, sigmamax, 1);
