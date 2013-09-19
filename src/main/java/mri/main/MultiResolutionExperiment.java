@@ -84,6 +84,14 @@ public class MultiResolutionExperiment {
         clusterer.setContent("datasetTemplate", transformed.getTemplate());
         clusterer.trainingAlgorithm.execute(transformed);
 
+        for (RealVector centroid: clusterer.centroids) {
+            System.out.print("\\addplot coordinates { ");
+            for (int i = 0; i < centroid.getDimension(); i++) {
+                System.out.print("(" + (i+1) + ", " + centroid.getEntry(i) + ") ");
+            }
+            System.out.println(" };");
+        }
+
         Dataset clusterLabels = transformed.apply(clusterer);
 
         List<Dataset> clusters = splitIntoClusters(classified, clusterLabels);

@@ -6,7 +6,9 @@ import game.plugins.metrics.StandardClassificationMetrics;
 import game.plugins.weka.algorithms.WekaJ48;
 import game.plugins.weka.classifiers.WekaClassifier;
 import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.PearsonsCorrelation;
 import org.apache.commons.math3.stat.correlation.SpearmansCorrelation;
+import weka.core.Utils;
 
 import java.io.FileWriter;
 import java.io.Writer;
@@ -42,6 +44,9 @@ public class MultiResolutionAnalysis {
         double[] standards = getMetric(row, standard);
         double[] mris = getMetric(0, mri);
         double corr = new SpearmansCorrelation().correlation(standards, mris);
+
+        //double corr = new PearsonsCorrelation().correlation(standards, mris);
+
         write(writer, standard.statistics.getRowLabels().get(row) + ": " + corr + "\n");
         write(writer, Arrays.toString(sizes) + "\n");
         write(writer, Arrays.toString(standards) + "\n");
@@ -53,14 +58,19 @@ public class MultiResolutionAnalysis {
         for(int i = 0; i < ret.length; i++) {
             ret[i] = ((RealMatrix)metrics.data.get(i)).getEntry(row, 0);
         }
+        Utils.normalize(ret, game.utils.Utils.getMax(ret));
         return ret;
     }
 
     public static void main(String... args) throws Exception {
         Locale.setDefault(Locale.ENGLISH);
         int[] ms = {10, 20, 30, 40, 50};
-        double[] sigmamaxs = {0.10, 0.15, 0.20, 0.25, 0.30};
+        double[] sigmamaxs = {0.05}; // {0.10, 0.15, 0.20};
         int[] clusternums = {3, 4, 5};
+        String[] datasets = {
+                "appendicitis", "banana", "breast-cancer-original", "mammographic-masses", "phoneme",
+                "pima", "ring", "spambase", "twonorm", "wdbc" };
+        int[] sizes = {10, 530, 65, 96, 540, 70, 740, 455, 740, 56};
 
         for(int m: ms) {
             for(double sigmamax: sigmamaxs) {
@@ -77,11 +87,6 @@ public class MultiResolutionAnalysis {
                     MultiResolutionExperiment experiment = new MultiResolutionExperiment(true, 5, clusters, 10, transform);
 
                     write(writer, name + "\n");
-
-                    String[] datasets = {
-                            "appendicitis", "banana", "breast-cancer-original", "mammographic-masses", "phoneme",
-                            "pima", "ring", "spambase", "twonorm", "wdbc" };
-                    int[] sizes = {10, 530, 65, 96, 540, 70, 740, 455, 740, 56};
 
                     for(int i = 0; i < datasets.length; i++) {
                         String dataset = datasets[i];

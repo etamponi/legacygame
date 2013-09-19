@@ -171,4 +171,12 @@ public class Utils {
 		
 		return ret.toString();
 	}
+
+    public static double getMin(double[] v) {
+        double min = v[0];
+        for(int i = 1; i < v.length; i++)
+            if (v[i] < min)
+                min = v[i];
+        return min;
+    }
 }
